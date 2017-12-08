@@ -1,0 +1,11 @@
+{
+  "name": "raml2typescript",
+  "version": "1.0.0",
+  "description": "Converts RAML schema types to Typescript types",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "jason.santos@rangle.io",
+  "license": "MIT"
+}
