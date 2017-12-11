@@ -1,0 +1,67 @@
+#!/usr/bin/env node
+
+"use strict";
+
+const yargs = require("yargs");
+const fs = require("fs");
+const raml2typescript = require("..");
+const pjson = require("../package.json");
+
+const argv = yargs
+  .usage("Usage: raml2typescript [options] [RAML input file]")
+  .version(pjson.version)
+  .alias("i", "input")
+  .alias("o", "output-dir")
+  .alias("v", "validate")
+  .alias("r", "recursive")
+  .alias("h", "help")
+  .help("h")
+  .string("i")
+  .string("o")
+  .boolean("r")
+  .boolean("v")
+  .boolean("p")
+  .describe("i", "Input file")
+  .describe("o", "Output path")
+  .describe("r", "Recursively search for schemas")
+  .describe("v", "Validate RAML and examples (off by default)")
+  .example("raml2typescript example.schema.raml > example.d.ts")
+  .example("raml2typescript --recursive *.schema.raml > all-types.d.ts")
+  .example("raml2typescript --recursive *.schema.raml -o src/types").argv;
+
+let input = argv.input;
+
+if (!input) {
+  if (argv._.length !== 1) {
+    console.error("Error: You need to specify the RAML input file\n");
+    yargs.showHelp();
+    process.exit(1);
+  }
+
+  input = argv._[0];
+}
+
+const config = {};
+
+// Start the rendering process
+raml2typescript
+  .render(input, config, argv)
+  .then(result => {
+    if (argv.output) {
+      console.log("OUTPUT DIR:", argv.output);
+    } else {
+      // Simply output to console
+      process.stdout.write(result, () => {
+        process.exit(0);
+      });
+    }
+  })
+  .catch(error => {
+    if (error.message) {
+      console.error(error.message);
+    }
+    if (error.parserErrors) {
+      console.error(JSON.stringify(error.parserErrors, null, 2));
+    }
+    process.exit(1);
+  });
