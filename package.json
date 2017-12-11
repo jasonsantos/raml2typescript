@@ -7,5 +7,10 @@
     "test": "jest"
   },
   "author": "jason.santos@rangle.io",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "nunjucks": "^3.0.1",
+    "raml2obj": "^5.8.0",
+    "yargs": "^10.0.3"
+  }
 }
