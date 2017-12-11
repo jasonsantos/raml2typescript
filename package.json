@@ -1,7 +1,8 @@
 {
   "name": "raml2typescript",
-  "version": "1.0.0",
-  "description": "Converts RAML schema types to Typescript types",
+  "version": "0.3.0",
+  "description":
+    "Simple and opinionated tool that converts RAML schema types to Typescript types",
   "main": "index.js",
   "scripts": {
     "test": "jest"
