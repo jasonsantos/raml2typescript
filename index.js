@@ -10,7 +10,15 @@ function render(source, config, options) {
   config.raml2TypescriptVersion = package.version;
   return raml2obj.parse(source).then(ramlObj => {
     ramlObj.config = config;
-    console.log(JSON.stringify(ramlObj, null, 4))
+    ramlObj.isNamedType = function(type) {
+      if (typeof type === "object") {
+        const isType = ramlObj.types && ramlObj.types[type.name];
+        if (isType) console.error(type.name, "is a Type");
+        return isType;
+      }
+      return type && type.indexOf("{") === -1 && type.indexOf("<") === -1;
+    };
+    console.log("const raml = ", JSON.stringify(ramlObj, null, 2));
     return nunjucks.configure("templates").render("type.nunjucks", ramlObj);
   });
 }
