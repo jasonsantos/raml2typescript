@@ -2,7 +2,7 @@ const raml2obj = require("raml2obj");
 const nunjucks = require("nunjucks");
 const package = require("./package.json");
 
-const indent = (n = 0) => " ".repeat(n);
+const indent = (n = 0) => "  ".repeat(n);
 
 function render(source, config, options) {
   config = config || {};
@@ -12,13 +12,11 @@ function render(source, config, options) {
     ramlObj.config = config;
     ramlObj.isNamedType = function(type) {
       if (typeof type === "object") {
-        const isType = ramlObj.types && ramlObj.types[type.name];
-        if (isType) console.error(type.name, "is a Type");
-        return isType;
+        return ramlObj.types && ramlObj.types[type.name];
       }
       return type && type.indexOf("{") === -1 && type.indexOf("<") === -1;
     };
-    console.log("const raml = ", JSON.stringify(ramlObj, null, 2));
+    //console.log("const raml = ", JSON.stringify(ramlObj, null, 2));
     return nunjucks.configure("templates").render("type.nunjucks", ramlObj);
   });
 }

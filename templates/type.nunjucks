@@ -22,13 +22,11 @@
     {%- elseif obj.type == 'object' and isNamedType(obj.items) -%}
         {{' '}}{{obj.name}}{{";\n" if not asExpression}}
     {%- elseif obj.properties %} {
-{% for key, value in obj.properties %}{{config.indent(level)}}{{key}}:{{' '}}{{printType(value, level+1)}}{% endfor %}
-{{config.indent(level-1)}}}{{"\n" if not asExpression}}{% else %}{{' '}}{{obj.type}}{{";\n" if not asExpression}}{% endif %}
+{% for key, value in obj.properties %}{{config.indent(level)}}{{key}}:{{' '}}{{printType(value, level+1)}}{% endfor %}{{config.indent(level-1)}}}{{"\n" if not asExpression}}{% else %}{{' '}}{{obj.type}}{{";\n" if not asExpression}}{% endif %}
 {%- endmacro %}
 
 
 {% for typeName, type in types %}
 type {{typeName}} = {
-{% for propertyName, property in type.properties %}{{config.indent(1)}}{{propertyName}}: {{ printType(property, 2) }}{% endfor %}
-}
+{% for propertyName, property in type.properties %}{{config.indent(1)}}{{propertyName}}: {{ printType(property, 2) }}{% endfor %}}
 {% endfor %}
